@@ -1,11 +1,7 @@
-string = ['1', '3', '5', '6']
-digit = '5'
+from math import sqrt
 
-a = [1, 2, 3, 5, 7]
-b = 3
+x = 4
 
-if b not in a:
-    a.append(b)
-    a.sort()
-
-print(a.index(b))
+result = sqrt(x)
+res = str(result).split('.')
+print(res[0])
