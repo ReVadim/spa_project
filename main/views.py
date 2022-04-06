@@ -1,8 +1,17 @@
 from django.shortcuts import render
+from django.views import View
 
 
-def home(request):
-    return render(request, template_name='main/homepage.html')
+class MainView(View):
+    def get(self, request, *args, **kwargs):
+        return render(
+            request,
+            'main/homepage.html'
+        )
+#
+#
+# def home(request):
+#     return render(request, template_name='main/homepage.html')
 
 
 def card(request):
