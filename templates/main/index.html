@@ -13,6 +13,8 @@
   </head>
   <body>
       {% include 'main/navbar.html' %}
+        {% block header %}
+        {% endblock header %}
       {% block post %}
       {% endblock post %}
       {% block contact %}
@@ -21,6 +23,8 @@
       {% endblock registration %}
       {% block content %}
       {% endblock content %}
+      {% block pagination %}
+      {% endblock pagination %}
       {% block signup %}
       {% endblock signup %}
       {% block search %}
