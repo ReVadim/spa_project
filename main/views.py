@@ -1,10 +1,10 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 
-from forms import SigUpForm
+from forms import SignUpForm, SignInForm
 from main.models import Post
 
 
@@ -28,19 +28,40 @@ class PostDetailView(View):
 
 class SignUpView(View):
     def get(self, request, *args, **kwargs):
-        form = SigUpForm()
+        form = SignUpForm()
         return render(request, 'main/signup.html', context={
             'form': form,
         })
 
     def post(self, request, *args, **kwargs):
-        form = SigUpForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
             if user is not None:
                 login(request, user)
                 return HttpResponseRedirect('/')
         return render(request, 'main/signup.html', context={
+            'form': form,
+        })
+
+
+class SignInView(View):
+    def get(self, request, *args, **kwargs):
+        form = SignInForm()
+        return render(request, 'main/signin.html', context={
+            'form': form,
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = SignInForm(request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/')
+        return render(request, 'main/signin.html', context={
             'form': form,
         })
 

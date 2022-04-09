@@ -1,15 +1,16 @@
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 
 
-class SigUpForm(forms.Form):
+class SignUpForm(forms.Form):
     username = forms.CharField(
         max_length=100,
         required=True,
         widget=forms.TextInput(attrs={
             'class': "form-control",
             'id': "inputUsername",
+            'placeholder': "Имя пользователя"
         }),
     )
 
@@ -18,6 +19,7 @@ class SigUpForm(forms.Form):
         widget=forms.PasswordInput(attrs={
             'class': "form-control",
             'id': "inputPassword",
+            'placeholder': "Пароль"
         }),
     )
     repeat_password = forms.CharField(
@@ -25,6 +27,7 @@ class SigUpForm(forms.Form):
         widget=forms.PasswordInput(attrs={
             'class': "form-control",
             'id': "ReInputPassword",
+            'placeholder': "Повторите пароль"
         }),
     )
 
@@ -45,3 +48,23 @@ class SigUpForm(forms.Form):
         user.save()
         auth = authenticate(**self.cleaned_data)
         return auth
+
+
+class SignInForm(forms.Form):
+    username = forms.CharField(
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': "form-control",
+            'id': "inputUsername",
+            'placeholder': "Имя пользователя",
+        })
+    )
+    password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={
+            'class': "form-control mt-2",
+            'id': "inputPassword",
+            'placeholder': "Пароль",
+        })
+    )

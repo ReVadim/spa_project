@@ -1,8 +1,6 @@
 {% extends 'main/index.html' %}
 {% load static %}
-{% load bootstrap4 %}
-
-{% block title %}Регистрация{% endblock title %}
+{% block title %}Вход{% endblock %}
 
 {% block content %}
     <div class="text-center">
@@ -20,20 +18,15 @@
                 </div>
             {% endfor %}
         {% endif %}
-        <form class="form-signin" method="post" action="{% url 'signup' %}">
+        <form class="form-signin" method="post" action="{% url 'signin' %}">
             {% csrf_token %}
             <div class="col-md-4 mb-3 mx-auto">
-            <h2 class="h3 mb-3 mt-3 font-weight-normal">Для регистрации укажите имя пользователя и пароль</h2>
+            <h1 class="h3 mb-3 mt-3 font-weight-normal">Пожалуйста укажите логин и пароль</h1>
             <label for="inputUsername" class="sr-only">Имя пользователя</label>
             {{ form.username }}
-                <br>
             <label for="inputPassword" class="sr-only">Пароль</label>
             {{ form.password }}
-                <br>
-            <label for="ReInputPassword" class="sr-only">Повторите пароль</label>
-            {{ form.repeat_password }}
-                <br>
-            <button class="btn mt-2 btn-lg btn-primary btn-block" type="submit">Регистрация</button>
+            <button class="btn mt-2 btn-lg btn-primary btn-block" type="submit">Войти</button>
             </div>
         </form>
     </div>
