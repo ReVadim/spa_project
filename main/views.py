@@ -1,6 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.core.mail import send_mail, BadHeaderError
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import View
@@ -12,12 +13,15 @@ from main.models import Post
 class MainView(View):
     """ home page render """
     def get(self, request, *args, **kwargs):
-        posts = Post.objects.all()
+        posts = Post.objects.get_queryset().order_by('id')
         paginator = Paginator(posts, 6)
 
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, 'main/homepage.html', context={'page_obj': page_obj})
+
+    class Meta:
+        ordering = ['-id']
 
 
 class PostDetailView(View):
@@ -80,10 +84,12 @@ class FeedBackView(View):
         if form.is_valid():
             name = form.cleaned_data['name']
             from_email = form.cleaned_data['email']
+            print(from_email)
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
             try:
-                send_mail(f'От {name} | {subject}', message, from_email, ['revani.web@gmail.com'])
+                send_mail(f'От {name} | {subject}', f'From: {from_email}\n\n{message}', from_email,
+                          ['revani.web@gmail.com', ], fail_silently=False)
             except BadHeaderError:
                 return HttpResponse('Невалидный заголовок')
             return HttpResponseRedirect('success')
@@ -99,22 +105,19 @@ class SuccessView(View):
         })
 
 
-def card(request):
-    return render(request, template_name='main/card.html')
-
-
-def article(request):
-    return render(request, template_name='main/article.html')
-
-
-def contacts(request):
-    return render(request, template_name='main/contact.html')
-
-
-def thanks(request):
-    return render(request, template_name='main/thanks.html')
-
-
-def registration(request):
-    return render(request, template_name='main/registration.html')
-
+class SearchResultsView(View):
+    def get(self, request, *args, **kwargs):
+        query = self.request.GET.get('q')
+        results = ''
+        if query:
+            results = Post.objects.filter(
+                Q(h1__icontains=query) | Q(content__icontains=query)
+            )
+        paginator = Paginator(results, 6)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'main/search.html', context={
+            'title': "Поиск",
+            'results': page_obj,
+            'count': paginator.count
+        })

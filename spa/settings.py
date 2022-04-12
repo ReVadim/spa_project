@@ -184,3 +184,4 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'revani.web@gmail.com'
 EMAIL_HOST_PASSWORD = 'cnhqjpnnoznsesww'
+DEFAULT_FROM_EMAIL = 'revani@yandex.ru'
