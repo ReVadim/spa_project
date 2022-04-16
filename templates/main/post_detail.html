@@ -3,8 +3,9 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block header %}
-    {% include 'main/header.html' %}
+    {% include 'main/block/header.html' %}
 {% endblock header %}
+
 {% block content %}
 <div class="container">
     <div class="row">
@@ -25,7 +26,9 @@
             <hr>
             <p class="text-right">Опубликовано {{ post.created_at }}</p>
             <hr>
+            {% include 'main/block/comments.html' %}
         </div>
+        {% include 'main/block/aside.html' %}
     </div>
 </div>
 
